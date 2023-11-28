@@ -3,3 +3,6 @@ run:
 
 compose:
 	docker-compose -f docker-compose.yml up -d 
+
+test-user:
+	go test ./...
