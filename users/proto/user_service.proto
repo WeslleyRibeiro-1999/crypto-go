@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option go_package = "./proto/pb";
+
+message GetUserRequest {
+    int64 userID = 1;
+}
+
+message GetUserResponse {
+    string name = 1;
+}
+
+service UserService {
+    rpc GeUserMessage(GetUserRequest) returns (GetUserResponse) {}
+}
