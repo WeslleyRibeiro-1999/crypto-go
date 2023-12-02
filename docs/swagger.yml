@@ -1,0 +1,361 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "User API"
+  description: "API para gerenciamento de usuários"
+tags:
+  - name: user
+  - name: order
+paths:
+  /user:
+    post:
+      tags:
+        - user
+      summary: "Cria um novo usuário"
+      operationId: create
+      description: "Cria um novo usuário com base nos dados fornecidos"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Dados do usuário a ser criado"
+          required: true
+          schema:
+            $ref: "#/definitions/CreateUser"
+      responses:
+        201:
+          description: "Usuário criado com sucesso"
+          schema:
+            $ref: "#/definitions/CreatedUser"
+    put:
+      tags:
+        - user
+      summary: "Atualiza um usuário"
+      operationId: update
+      description: "Atualiza um usuário com base nos dados fornecidos"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Dados do usuário a serem atualizados"
+          required: true
+          schema:
+            $ref: "#/definitions/UpdateUser"
+      responses:
+        200:
+          description: "Usuário atualizado com sucesso"
+          schema:
+            $ref: "#/definitions/UpdateUser"
+
+  /user/{id}:
+    get:
+      tags:
+        - user
+      summary: "Obtém um usuário pelo ID"
+      operationId: getAll
+      description: "Obtém um usuário com base no ID fornecido"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "id"
+          type: "integer"
+          format: "int64"
+          required: true
+      responses:
+        200:
+          description: "Usuário obtido com sucesso"
+          schema:
+            $ref: "#/definitions/UserResponse"
+      
+    delete:
+      tags:
+        - user
+      summary: "Deleta um usuário"
+      operationId: delete
+      description: "Deleta um usuário com base no ID fornecido"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "id"
+          type: "integer"
+          format: "int64"
+          required: true
+      responses:
+        200:
+          description: "Usuário deletado com sucesso"
+          schema:
+            type: "object"
+            properties:
+              deleted:
+                type: "boolean"
+
+  /users:
+    get:
+      tags:
+        - user
+      summary: "Obtém todos os usuários"
+      description: "Obtém uma lista de todos os usuários"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "Lista de usuários obtida com sucesso"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/UserResponse"
+  
+  /order:
+    post:
+      tags:
+        - order
+      summary: "Cria um novo pedido"
+      description: "Cria um novo pedido com base nos dados fornecidos"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Dados do pedido a ser criado"
+          required: true
+          schema:
+            $ref: "#/definitions/CreateOrderRequest"
+      responses:
+        201:
+          description: "Pedido criado com sucesso"
+          schema:
+            $ref: "#/definitions/CreateOrderResponse"
+        500:
+          description: "Erro interno no servidor"
+
+  /orders/{user_id}:
+    get:
+      tags:
+        - order
+      summary: "Obtém todos os pedidos de um usuário"
+      description: "Obtém uma lista de todos os pedidos associados a um usuário"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "user_id"
+          type: "integer"
+          format: "int64"
+          required: true
+      responses:
+        200:
+          description: "Lista de pedidos obtida com sucesso"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Order"
+        500:
+          description: "Erro interno no servidor"
+
+  /orders:
+    get:
+      tags:
+        - order
+      summary: "Obtém todos os pedidos"
+      description: "Obtém uma lista de todos os pedidos"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "Lista de pedidos obtida com sucesso"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Order"
+        500:
+          description: "Erro interno no servidor"
+
+  /order/{id}:
+    get:
+      tags:
+        - order
+      summary: "Obtém um pedido pelo ID"
+      description: "Obtém um pedido com base no ID fornecido"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "id"
+          type: "integer"
+          format: "int64"
+          required: true
+      responses:
+        200:
+          description: "Pedido obtido com sucesso"
+          schema:
+            $ref: "#/definitions/Order"
+        500:
+          description: "Erro interno no servidor"
+
+    delete:
+      tags:
+        - order
+      summary: "Deleta um pedido"
+      description: "Deleta um pedido com base no ID fornecido"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "id"
+          type: "integer"
+          format: "int64"
+          required: true
+      responses:
+        200:
+          description: "Pedido deletado com sucesso"
+          schema:
+            type: "object"
+            properties:
+              status:
+                type: "boolean"
+        500:
+          description: "Erro interno no servidor"
+                
+definitions:
+  User:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      email:
+        type: string
+      phone_number:
+        type: string
+      created_at:
+        type: string
+        format: date-time
+      updated_at:
+        type: string
+        format: date-time
+
+  CreateUser:
+    type: object
+    properties:
+      name:
+        type: string
+      email:
+        type: string
+      phone_number:
+        type: string
+
+  CreatedUser:
+    type: object
+    properties:
+      status:
+        type: boolean
+      name:
+        type: string
+      email:
+        type: string
+
+  UserResponse:
+    type: object
+    properties:
+      name:
+        type: string
+      email:
+        type: string
+      phone_number:
+        type: string
+
+  UpdateUser:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      email:
+        type: string
+      phone_number:
+        type: string
+  Order:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      user_id:
+        type: integer
+        format: int64
+      pair:
+        type: string
+      amount:
+        type: number
+        format: double
+      direction:
+        type: string
+      type:
+        $ref: "#/definitions/OrderType"
+      created_at:
+        type: string
+        format: date-time
+      updated_at:
+        type: string
+        format: date-time
+
+  CreateOrderRequest:
+    type: object
+    properties:
+      user_id:
+        type: integer
+        format: int64
+      pair:
+        type: string
+      amount:
+        type: number
+        format: double
+      direction:
+        type: string
+      type:
+        $ref: "#/definitions/OrderType"
+
+  CreateOrderResponse:
+    type: object
+    properties:
+      pair:
+        type: string
+      amount:
+        type: number
+        format: double
+      direction:
+        type: string
+
+  OrderType:
+    type: string
+    enum:
+      - "buy"
+      - "sell"
