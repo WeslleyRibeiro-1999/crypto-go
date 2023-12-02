@@ -1,12 +1,11 @@
 package usecase
 
 import (
-	"fmt"
 	"log"
 	"strconv"
 
 	"github.com/WeslleyRibeiro-1999/crypto-go/users/models"
-	"github.com/WeslleyRibeiro-1999/crypto-go/users/pkg/repository"
+	"github.com/WeslleyRibeiro-1999/crypto-go/users/src/user/repository"
 )
 
 type UsecaseUser interface {
@@ -28,8 +27,6 @@ func NewUsecase(repo repository.Repository) UsecaseUser {
 }
 
 func (u *usecase) CreateUser(user *models.CreateUser) (*models.CreatedUser, error) {
-	fmt.Println("estamos aqui111")
-
 	newUser, err := u.repository.CreateUser(&models.User{
 		Name:        user.Name,
 		Email:       user.Email,

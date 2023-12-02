@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/WeslleyRibeiro-1999/crypto-go/users/models"
-	"github.com/WeslleyRibeiro-1999/crypto-go/users/pkg/usecase"
+	"github.com/WeslleyRibeiro-1999/crypto-go/users/src/user/usecase"
 	"github.com/labstack/echo/v4"
 )
 
